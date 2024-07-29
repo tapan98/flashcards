@@ -102,14 +102,12 @@ class CardsDatabase {
   /// Also check for return values [DbReturnCode.ok] or [DbReturnCode.noCard]
   DbReturnCode deleteCard(int cardIndex) {
     if (cardIndex < cardsList.length) {
-      debugPrint("deleteCard(): cardIndex: $cardIndex");
-      int deckID = cardsList[cardIndex][deckIdIndex];
+      debugPrint("deleteCard(): deleting card index: $cardIndex");
       cardsList.removeAt(cardIndex);
       updateCardDatabase();
-      deleteDeck(deckID);
-      updateDeckDatabase();
       return DbReturnCode.ok;
     }
+    debugPrint("deleteCard(): card index: $cardIndex not found");
     return DbReturnCode.noCard;
   }
 
