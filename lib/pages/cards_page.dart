@@ -64,7 +64,7 @@ class _CardsPageState extends State<CardsPage> {
   /// Generates FloatingActionButton
   /// ony if a deck is selected;
   /// i.e. [widget.deckID] is not null
-  FloatingActionButton? buildFloatingActionButton() {
+  FloatingActionButton? buildFloatingActionButton(ThemeData theme) {
     if (widget.deckID != null &&
         ((_cardsList?.length ?? widget.database.cardsList.length) != 0)) {
       return FloatingActionButton.extended(
@@ -86,6 +86,8 @@ class _CardsPageState extends State<CardsPage> {
           "🤔",
           semanticsLabel: "",
         ),
+        backgroundColor: theme.colorScheme.primary,
+        foregroundColor: theme.colorScheme.onPrimary,
       );
     }
 
@@ -104,6 +106,8 @@ class _CardsPageState extends State<CardsPage> {
         );
       },
       tooltip: "Add new card",
+      backgroundColor: theme.colorScheme.primary,
+      foregroundColor: theme.colorScheme.onPrimary,
       child: const Icon(Icons.add),
     );
   }
@@ -246,8 +250,9 @@ class _CardsPageState extends State<CardsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      floatingActionButton: buildFloatingActionButton(),
+      floatingActionButton: buildFloatingActionButton(theme),
       body: CustomScrollView(
         controller: widget.controller,
         slivers: buildWidgetLists(),

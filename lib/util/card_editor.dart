@@ -138,6 +138,8 @@ class _CardEditorState extends State<CardEditor> {
         tooltip: "Save",
         label: const Text("Save"),
         icon: const Icon(Icons.save),
+        backgroundColor: theme.colorScheme.primary,
+        foregroundColor: theme.colorScheme.onPrimary,
       ),
       body: Form(
         key: _formKey,
@@ -222,6 +224,11 @@ class _CardEditorState extends State<CardEditor> {
                               },
                             );
                           },
+                          style: FilledButton.styleFrom(
+                            backgroundColor: theme.colorScheme.primaryContainer,
+                            foregroundColor:
+                                theme.colorScheme.onPrimaryContainer,
+                          ),
                           child: const Text("Add deck"),
                         ),
                       ),

@@ -27,7 +27,7 @@ class _DecksPageState extends State<DecksPage> {
   ActionPane startActionPane(BuildContext context, int index) {
     final theme = Theme.of(context);
     return ActionPane(
-      motion: const BehindMotion(),
+      motion: const DrawerMotion(),
       children: [
         SlidableAction(
           backgroundColor: theme.colorScheme.tertiary,
@@ -57,7 +57,7 @@ class _DecksPageState extends State<DecksPage> {
   ActionPane endActionPane(BuildContext context, int index) {
     final theme = Theme.of(context);
     return ActionPane(
-      motion: const BehindMotion(),
+      motion: const DrawerMotion(),
       children: [
         SlidableAction(
           backgroundColor: theme.colorScheme.tertiary,
@@ -86,11 +86,11 @@ class _DecksPageState extends State<DecksPage> {
 
   /// builds a slidable deck at [index]
   Widget sliverChildDelegateBuilder(BuildContext context, int index) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Slidable(
-        startActionPane: startActionPane(context, index),
-        endActionPane: endActionPane(context, index),
+    return Slidable(
+      startActionPane: startActionPane(context, index),
+      endActionPane: endActionPane(context, index),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: DecoratedDeck(
           onPressed: () {
             Navigator.of(context).push(
