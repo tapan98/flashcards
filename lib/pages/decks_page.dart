@@ -231,25 +231,28 @@ class EditDeckDialog extends StatelessWidget {
             ),
           ),
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            DialogButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              text: "Cancel",
-            ),
-            DialogButton(
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  formKey.currentState!.save();
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              DialogButton(
+                onPressed: () {
                   Navigator.pop(context);
-                }
-              },
-              text: "Save",
-            ),
-          ],
+                },
+                text: "Cancel",
+              ),
+              DialogButton(
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    formKey.currentState!.save();
+                    Navigator.pop(context);
+                  }
+                },
+                text: "Save",
+              ),
+            ],
+          ),
         ),
       ],
     );

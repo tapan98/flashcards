@@ -1,6 +1,6 @@
 import 'package:flash_your_memory/data/database.dart';
 import 'package:flash_your_memory/pages/test_page.dart';
-import 'package:flash_your_memory/util/card_editor.dart';
+import 'package:flash_your_memory/pages/editor_page.dart';
 import 'package:flash_your_memory/util/card_tile.dart';
 import 'package:flip_card/flip_card_controller.dart';
 import 'package:flutter/foundation.dart';
@@ -95,7 +95,7 @@ class _CardsPageState extends State<CardsPage> {
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => CardEditor(
+            builder: (context) => CardEditorPage(
               deckID: -1,
               database: widget.database,
               notifyParent: () => setState(() {
@@ -122,7 +122,7 @@ class _CardsPageState extends State<CardsPage> {
   void modifyCard(BuildContext context, int index) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => CardEditor(
+        builder: (context) => CardEditorPage(
           deckID: -1,
           database: widget.database,
           notifyParent: () {
@@ -171,7 +171,7 @@ class _CardsPageState extends State<CardsPage> {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => CardEditor(
+                    builder: (context) => CardEditorPage(
                       deckID: widget.deckID!,
                       database: widget.database,
                       notifyParent: () {

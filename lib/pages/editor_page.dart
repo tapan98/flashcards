@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// Page to add/edit a card
-class CardEditor extends StatefulWidget {
+class CardEditorPage extends StatefulWidget {
   final CardsDatabase database;
   final Function() notifyParent;
   final void Function()? onEdit;
@@ -15,7 +15,7 @@ class CardEditor extends StatefulWidget {
   /// Card index from database to edit
   final int? cardIndex;
 
-  const CardEditor({
+  const CardEditorPage({
     super.key,
     required this.database,
     required this.notifyParent,
@@ -26,10 +26,10 @@ class CardEditor extends StatefulWidget {
   });
 
   @override
-  State<CardEditor> createState() => _CardEditorState();
+  State<CardEditorPage> createState() => _CardEditorPageState();
 }
 
-class _CardEditorState extends State<CardEditor> {
+class _CardEditorPageState extends State<CardEditorPage> {
   final _dialogTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _deckFormKey = GlobalKey<FormState>();
@@ -83,7 +83,7 @@ class _CardEditorState extends State<CardEditor> {
     // Set up for edit mode
     if (widget.cardIndex != null &&
         widget.cardIndex! < widget.database.cardsList.length) {
-      debugPrint("build(): --- Card Edit mode ---");
+      debugPrint("initState(): --- Card Edit mode ---");
 
       _frontText = widget.database.cardsList[widget.cardIndex!]
           [CardsDatabase.frontIndex];
@@ -97,7 +97,7 @@ class _CardEditorState extends State<CardEditor> {
       _dropDownValue ??=
           widget.database.decksList[deckID][CardsDatabase.deckNameIndex];
 
-      debugPrint("build(): _dropDownValue: $_dropDownValue");
+      debugPrint("initState(): _dropDownValue: $_dropDownValue");
     }
   }
 

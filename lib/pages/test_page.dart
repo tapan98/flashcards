@@ -176,11 +176,11 @@ class _TestPageState extends State<TestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Test: ${widget.title}"),
-      ),
       body: CustomScrollView(
         slivers: [
+          SliverAppBar.medium(
+            title: Text("Test: ${widget.title}"),
+          ),
           SliverFillRemaining(
             hasScrollBody: false,
             child: Padding(

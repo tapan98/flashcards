@@ -77,7 +77,7 @@ class DecoratedCard extends StatelessWidget {
     required this.testMode,
   });
 
-  List<Widget> getChildrenItems(Color dividerColor) {
+  List<Widget> getChildrenItems() {
     List<Widget> items = <Widget>[
       Expanded(
         child: Center(
@@ -94,7 +94,7 @@ class DecoratedCard extends StatelessWidget {
     if (testMode == false) {
       items.addAll([
         Divider(
-          color: dividerColor,
+          color: foregroundColor,
         ),
         ElevatedButton(
           onPressed: () => controller.toggleCard(),
@@ -130,7 +130,7 @@ class DecoratedCard extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(25.0)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: getChildrenItems(foregroundColor),
+          children: getChildrenItems(),
         ),
       ),
     );
