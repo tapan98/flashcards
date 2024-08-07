@@ -536,6 +536,7 @@ class CardsDatabase {
         String json = utf8.decode(file.readAsBytesSync());
         debugPrint("import(): imported file contents: $json");
         if (deserializeAndAppend(json)) {
+          updateDatabase();
           notifyParent;
         }
       } else {
