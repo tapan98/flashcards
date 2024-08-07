@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -467,6 +470,122 @@ class CardsDatabase {
 
   void updateDeckDatabase() {
     _decks.put(_decksListName, decksList);
+  }
+
+  /// appends [deckIdIndex, "deckName"] to [decksList]
+  /// and returns true if deckID is unique
+  ///
+  /// else returns false
+  bool appendDeck(List deckToAppend) {
+    debugPrint("appendDeck(): appending $deckToAppend...");
+    for (List deck in decksList) {
+      if (deck[deckIdIndex] == deckToAppend[deckIdIndex]) {
+        debugPrint(
+            "appendDeck(): deckID: ${deckToAppend[deckIdIndex]} exists. Returning...");
+        return false;
+      }
+    }
+    decksList.add(deckToAppend);
+    debugPrint("appendDeck(): decksList after appending: $decksList");
+    return true;
+  }
+
+  /// appends [FrontText, BackText, Diffculty, DeckID]
+  /// to the [cardsList]
+  /// and returns true if frontText is unique
+  ///
+  /// else returns false
+  bool appendCard(List cardToAppend) {
+    debugPrint("appendCard(): appending $cardToAppend...");
+    for (List card in cardsList) {
+      if (card[frontIndex] == cardToAppend[frontIndex]) {
+        debugPrint(
+            "appendDeck(): frontText: ${cardToAppend[frontIndex]} exists. Returning...");
+        return false;
+      }
+    }
+    cardsList.add(cardToAppend);
+    debugPrint("appendCard(): cardsList after appending: $cardsList");
+    return true;
+  }
+
+  /// exports [cardsList] and [decksList] to a JSON file
+  void export() async {
+    debugPrint("export function called");
+    String fileName = "flashcards.json";
+    String? result = await FilePicker.platform.saveFile(
+      dialogTitle: "Export flashcards",
+      fileName: fileName,
+      bytes: utf8.encode(serialize()),
+      allowedExtensions: <String>[".json"],
+    );
+    if (result != null) {
+      debugPrint("export(): exported to: $result");
+    } else {
+      debugPrint("export(): Couldn't export file");
+    }
+  }
+
+  /// imports [cardsList] and [decksList] from a JSON file
+  void import(VoidCallback notifyParent) async {
+    debugPrint("import function called");
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
+      if (result != null) {
+        File file = File(result.files.single.path!);
+        String json = utf8.decode(file.readAsBytesSync());
+        debugPrint("import(): imported file contents: $json");
+        if (deserializeAndAppend(json)) {
+          notifyParent;
+        }
+      } else {
+        debugPrint("import(): User cancelled file import");
+      }
+    } catch (e) {
+      debugPrint("Exception in import(): $e");
+    }
+  }
+
+  /// Serializes data to:
+  ///
+  /// {
+  ///   "cardsList": [[cardData], ...],
+  ///   "decksList": [[deckData], ...]
+  /// }
+  String serialize() {
+    return jsonEncode(
+        <String, dynamic>{"cardsList": cardsList, "decksList": decksList});
+  }
+
+  /// 1. De-seralizes data to:
+  ///
+  /// {
+  ///   cardsList: [[<cardData>],...],
+  ///   decksList: [[<deckData>],...]
+  /// }
+  ///
+  /// 2. Appends data to existing lists
+  bool deserializeAndAppend(String json) {
+    bool appended = false;
+    Map<String, dynamic> list = jsonDecode(json);
+    List cards = list["cardsList"];
+    List decks = list["decksList"];
+    debugPrint("deserializeAndAppend():\nCards: $cards\nDecks: $decks");
+
+    debugPrint("deserializeAndAppend(): appending decks:\n$decks");
+    for (List deck in decks) {
+      if (appendDeck(deck)) {
+        appended = true;
+      }
+    }
+
+    debugPrint("deserializeAndAppend(): appending cards:$cards");
+    for (List card in cards) {
+      if (appendCard(card)) {
+        appended = true;
+      }
+    }
+    return appended;
   }
 
   void debugPrint(String msg) {

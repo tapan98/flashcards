@@ -1,6 +1,7 @@
 import 'package:flash_your_memory/data/database.dart';
 import 'package:flash_your_memory/pages/cards_page.dart';
 import 'package:flash_your_memory/pages/decks_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class FirstPage extends StatefulWidget {
@@ -15,7 +16,10 @@ class _FirstPageState extends State<FirstPage> {
   int _activePage = 0;
   final _decksScrollController = ScrollController();
   final _cardsScrollController = ScrollController();
+  static const int _popupMenuImport = 0;
+  static const int _popupMenuExport = 1;
 
+  /// TODO: doesn't refresh [destinations] widgets
   void refreshState() {
     setState(() {});
   }
@@ -51,6 +55,28 @@ class _FirstPageState extends State<FirstPage> {
         // title: const SearchBar(
         //   hintText: "Search",
         // ),
+        actions: [
+          PopupMenuButton<int>(
+              onSelected: (value) {
+                switch (value) {
+                  case _popupMenuExport:
+                    widget.database.export();
+                  case _popupMenuImport:
+                    widget.database.import(refreshState);
+                  default:
+                    if (kDebugMode) {
+                      print(
+                          "[FirstPage] PopupMenuButton: invalid selection: $value");
+                    }
+                }
+              },
+              itemBuilder: (context) => [
+                    const PopupMenuItem(
+                        value: _popupMenuImport, child: Text("Import")),
+                    const PopupMenuItem(
+                        value: _popupMenuExport, child: Text("Export")),
+                  ]),
+        ],
         title: const Text("Flash cards"),
       ),
       body: SafeArea(
