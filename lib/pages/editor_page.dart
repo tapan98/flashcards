@@ -21,7 +21,6 @@ class CardEditorPage extends StatefulWidget {
     required this.notifyParent,
     this.onEdit,
     this.cardIndex,
-    // TODO always null?
     required this.deckID,
   });
 
@@ -119,8 +118,7 @@ class _CardEditorPageState extends State<CardEditorPage> {
           debugPrint("Save button _dropDownValue: $_dropDownValue");
           if (_formKey.currentState!.validate() && _dropDownValue != null) {
             _formKey.currentState!.save();
-            int deckID = widget.database.deckWhere(_dropDownValue ?? "");
-
+            int deckID = widget.database.deckWhere(_dropDownValue!);
             if (deckID == -1) {
               debugPrint(
                   "FloatingActionButton(): Deck $_dropDownValue doesn't exist");
@@ -182,7 +180,6 @@ class _CardEditorPageState extends State<CardEditorPage> {
                   // decks drop down list
                   padding: const EdgeInsets.all(10.0),
                   child: DropdownButtonFormField<String>(
-                    // TODO: doesn't assign initial value
                     value: _dropDownValue,
                     items: _dropDownItems,
                     onChanged: (String? value) {

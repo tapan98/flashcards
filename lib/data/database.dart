@@ -133,10 +133,9 @@ class CardsDatabase {
   ///
   /// Returns -1 if deck doesn't exist by [deckName]
   int deckWhere(String deckName) {
-    for (int i = 0; i < decksList.length; i++) {
-      if (decksList[i][deckNameIndex] == deckName) {
-        //deck found, return deck's id
-        return i;
+    for (List deck in decksList) {
+      if (deck[deckNameIndex] == deckName) {
+        return deck[deckIdIndex];
       }
     }
     return -1;
