@@ -50,11 +50,6 @@ class _FirstPageState extends State<FirstPage> {
     ];
     return Scaffold(
       appBar: AppBar(
-        // toolbarHeight: 75,
-        // leadingWidth: double.infinity,
-        // title: const SearchBar(
-        //   hintText: "Search",
-        // ),
         actions: [
           PopupMenuButton<int>(
               onSelected: (value) {

@@ -27,13 +27,7 @@ class MainApp extends StatelessWidget {
         home: FirstPage(
           database: db,
         ),
-        // TODO: Create switchable dark theme
         theme: ThemeData(
-          // appBarTheme: AppBarTheme(
-          //   backgroundColor:
-          //       lightDynamic?.primaryContainer ?? Colors.blue.shade700,
-          //   foregroundColor: lightDynamic?.onPrimaryContainer ?? Colors.white,
-          // ),
           colorScheme: lightDynamic,
           useMaterial3: true,
         ),
@@ -41,9 +35,6 @@ class MainApp extends StatelessWidget {
           colorScheme: darkDynamic,
           useMaterial3: true,
         ),
-        // routes: {
-        //   '/firstPage': (context) => FirstPage(database: db),
-        // },
       );
     });
   }

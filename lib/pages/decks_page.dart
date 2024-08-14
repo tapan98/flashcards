@@ -140,7 +140,7 @@ class _DecksPageState extends State<DecksPage> {
   }
 
   /// for debugging purposes
-  void debugPrint(String msg) {
+  void _debugPrint(String msg) {
     if (kDebugMode) {
       print("[DecksPage] $msg");
     }

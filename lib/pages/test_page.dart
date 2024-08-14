@@ -227,12 +227,12 @@ class CardsList {
     if (_cardsList.isEmpty) return;
     // random number between 0 to maximum distribution value
     int randomNumber = _rng.nextInt(_cardsList.last[distributionValueIndex]);
-    debugPrint("Random number: $randomNumber");
+    _debugPrint("Random number: $randomNumber");
 
     // select card
     for (int i = 0; i < _cardsList.length; i++) {
       if (randomNumber < _cardsList[i][distributionValueIndex]) {
-        debugPrint("lucky card: ${_cardsList[i][frontIndex]}");
+        _debugPrint("lucky card: ${_cardsList[i][frontIndex]}");
         _index = i;
         _cardsList[i][countIndex]++;
         break;
@@ -256,14 +256,14 @@ class CardsList {
       }
       totalCount += _cardsList[i][countIndex] as int;
     }
-    debugPrint("---Card's details---");
+    _debugPrint("---Card's details---");
     for (List card in _cardsList) {
       String percentage =
           ((card[countIndex] / totalCount * 100) as double).toStringAsFixed(2);
       int dbIndex = card[cardIndex];
-      debugPrint(
+      _debugPrint(
           "Card: ${card[frontIndex]}\ndistribution value: ${card[distributionValueIndex]}\tcount: ${card[countIndex]}\tpriority: ${database.cardsList[dbIndex][CardsDatabase.priorityIndex]}\toccurence percentage: $percentage%");
-      debugPrint("Total count: $totalCount");
+      _debugPrint("Total count: $totalCount");
     }
   }
 
@@ -298,7 +298,7 @@ class CardsList {
   ///
   /// also distributes probability based on their priority value
   void buildCardsList() {
-    debugPrint("building _cardsList...");
+    _debugPrint("building _cardsList...");
     for (int i = 0; i < database.cardsList.length; i++) {
       if (database.cardsList[i][CardsDatabase.cardDeckIDIndex] == deckID) {
         if (_cardsList.isEmpty) {
@@ -324,14 +324,14 @@ class CardsList {
             0,
           ]);
         }
-        debugPrint("Card: ${database.cardsList[i][CardsDatabase.frontIndex]}");
-        debugPrint(
+        _debugPrint("Card: ${database.cardsList[i][CardsDatabase.frontIndex]}");
+        _debugPrint(
             "Priority: ${database.cardsList[i][CardsDatabase.priorityIndex]}");
       }
     }
-    debugPrint(
+    _debugPrint(
         "buildCardsList():\n${CardsList.cardsDebugHelper}\n_cardsList: $_cardsList");
-    debugPrint(
+    _debugPrint(
         "Last distribution value (Sum): ${_cardsList.last[distributionValueIndex]}");
   }
 
@@ -350,7 +350,7 @@ class CardsList {
   /// -1 = uninitialized
   double ratioFactor = -1;
 
-  debugPrint(String msg) {
+  _debugPrint(String msg) {
     if (kDebugMode) {
       print("[TestPage/CardsList] $msg");
     }

@@ -43,7 +43,7 @@ class _CardsPageState extends State<CardsPage> {
       List databaseCardsList = widget.database.cardsList;
       _cardsList = [];
 
-      debugPrint(
+      _debugPrint(
           "buildCardsList(): deckID: ${widget.deckID}, building cardsList");
 
       for (int i = 0; i < widget.database.cardsList.length; i++) {
@@ -61,15 +61,16 @@ class _CardsPageState extends State<CardsPage> {
     }
   }
 
-  /// Generates FloatingActionButton
-  /// ony if a deck is selected;
-  /// i.e. [widget.deckID] is not null
+  /// Generates a FloatingActionButton
+  ///
+  /// It's a test button for the selected deck,
+  /// else it's a add new card button
   FloatingActionButton? buildFloatingActionButton(ThemeData theme) {
     if (widget.deckID != null &&
         ((_cardsList?.length ?? widget.database.cardsList.length) != 0)) {
       return FloatingActionButton.extended(
         onPressed: () {
-          debugPrint("buildFloatingActionButton(): Start test");
+          _debugPrint("buildFloatingActionButton(): Start test");
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => TestPage(
@@ -298,7 +299,7 @@ class _CardsPageState extends State<CardsPage> {
     return back;
   }
 
-  void debugPrint(String msg) {
+  void _debugPrint(String msg) {
     if (kDebugMode) print("----[CardsPage]---- $msg");
   }
 }

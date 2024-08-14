@@ -116,7 +116,6 @@ class DecoratedCard extends StatelessWidget {
         ),
       ]);
     }
-
     return items;
   }
 
