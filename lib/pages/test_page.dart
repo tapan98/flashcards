@@ -60,94 +60,111 @@ class _TestPageState extends State<TestPage> {
     if (currentIndex != null) {
       debugPrint(// priority level of the current card
           "${_cardsList?.getFrontText()} priority: ${widget.database.cardsList[currentIndex][CardsDatabase.priorityIndex]}");
-    }
-
-    if (_isFront) {
-      // tap to reveal button
-      widgets.add(
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              FilledButton(
-                onPressed: () {
-                  debugPrint("build(): Tap to reveal button pressed");
-                  if (_controllerFlipCard.state?.isFront ?? false) {
-                    _controllerFlipCard.toggleCardWithoutAnimation();
-                    setState(() {});
-                  }
-                },
-                child: const Padding(
-                  padding: EdgeInsets.all(20.0),
-                  child: Text("Tap to reveal"),
+      if (_isFront) {
+        // tap to reveal button
+        widgets.add(
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FilledButton(
+                  onPressed: () {
+                    debugPrint("build(): Tap to reveal button pressed");
+                    if (_controllerFlipCard.state?.isFront ?? false) {
+                      _controllerFlipCard.toggleCardWithoutAnimation();
+                      setState(() {});
+                    }
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: Text("Tap to reveal"),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      );
-      _isFront = !_isFront;
-    } else {
-      // user tapped reveal button
-      widgets.addAll([
-        Expanded(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Did you get it right?"),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    width: 8.0,
+        );
+        _isFront = !_isFront;
+      } else {
+        // user tapped reveal button
+        widgets.addAll([
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Did you get it right?",
+                  style: TextStyle(
+                    fontSize: 20,
                   ),
-                  FilledButton.icon(
-                    // Yes button
-                    style: FilledButton.styleFrom(
-                      backgroundColor: theme.colorScheme.primary,
-                      foregroundColor: theme.colorScheme.onPrimary,
+                ),
+                const SizedBox(height: 10.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FilledButton.icon(
+                      // Yes button
+                      style: FilledButton.styleFrom(
+                        backgroundColor: theme.colorScheme.primary,
+                        foregroundColor: theme.colorScheme.onPrimary,
+                      ),
+                      onPressed: () =>
+                          onAssessmentButtonPressed(isCorrect: true),
+                      icon: const Icon(Icons.check),
+                      label: const Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: Text("Yes"),
+                      ),
                     ),
-                    onPressed: () => onAssessmentButtonPressed(isCorrect: true),
-                    icon: const Icon(Icons.check),
-                    label: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Yes"),
+                    const SizedBox(width: 8.0),
+                    FilledButton.icon(
+                      // No button
+                      style: FilledButton.styleFrom(
+                        backgroundColor: theme.colorScheme.secondary,
+                        foregroundColor: theme.colorScheme.onSecondary,
+                      ),
+                      onPressed: () =>
+                          onAssessmentButtonPressed(isCorrect: false),
+                      icon: const Icon(Icons.close),
+                      label: const Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: Text("No"),
+                      ),
                     ),
+                  ],
+                ),
+                const SizedBox(height: 10.0),
+                FilledButton.icon(
+                  onPressed: () {
+                    onAssessmentButtonPressed(isCorrect: true, skip: true);
+                  },
+                  icon: const Icon(Icons.check),
+                  label: const Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Text("Yes and don't ask again"),
                   ),
-                  const SizedBox(width: 8.0),
-                  FilledButton.icon(
-                    // No button
-                    style: FilledButton.styleFrom(
-                      backgroundColor: theme.colorScheme.secondary,
-                      foregroundColor: theme.colorScheme.onSecondary,
-                    ),
-                    onPressed: () =>
-                        onAssessmentButtonPressed(isCorrect: false),
-                    icon: const Icon(Icons.close),
-                    label: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("No"),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        )
-      ]);
+                )
+              ],
+            ),
+          )
+        ]);
+      }
     }
     return widgets;
   }
 
   /// Increases/decreases card priority, gets the next card and flips the test card
-  void onAssessmentButtonPressed({required bool isCorrect}) {
+  void onAssessmentButtonPressed({required bool isCorrect, bool skip = false}) {
     if (_cardsList != null && _cardsList!.getCardIndex() != null) {
-      int databaseIndex = _cardsList!.getCardIndex()!;
       if (isCorrect) {
         debugPrint("✅ button pressed\nDecreasing priority...");
         if ((widget.database.decreasePriority(_cardsList!.getCardIndex()!)) ==
             DbReturnCode.noCard) {
           debugPrint("No Card");
+        }
+        if (skip) {
+          debugPrint('Skipping card "${_cardsList!.getFrontText()}"');
+          _cardsList!.skipCard();
         }
       } else {
         debugPrint("❌ button pressed\nIncreasing priority...");
@@ -156,8 +173,6 @@ class _TestPageState extends State<TestPage> {
           debugPrint("No Card");
         }
       }
-      debugPrint(
-          "${_cardsList!.getFrontText()} priority: ${widget.database.cardsList[databaseIndex][CardsDatabase.priorityIndex]}");
     }
 
     // get next card
@@ -218,9 +233,10 @@ class CardsList {
   static const int distributionValueIndex = 2;
   static const int cardIndex = 3;
   static const int countIndex = 4;
+  static const int skipIndex = 5;
 
   static const String cardsDebugHelper =
-      "cardsList[ [ frontText, backText, distributionValue, card's DB index, count], ...]";
+      "cardsList[ [ frontText, backText, distributionValue, card's DB index, count, skip], ...]";
 
   /// Randomly selects a card based on their probability distribution
   void selectCard() {
@@ -244,6 +260,12 @@ class CardsList {
   /// based on the priority of the card
   void updateDistribution() {
     int totalCount = 0;
+
+    if (_cardsList.isEmpty) {
+      _index == null;
+      return;
+    }
+
     for (int i = 0; i < _cardsList.length; i++) {
       int dbIndex = _cardsList[i][cardIndex];
       int priority = database.cardsList[dbIndex][CardsDatabase.priorityIndex];
@@ -270,28 +292,36 @@ class CardsList {
   /// Returns front text of the card
   /// based on selected card
   String getFrontText() {
-    if (_index != null) {
+    if (_index != null && _cardsList.isNotEmpty) {
       return _cardsList[_index!][frontIndex];
     }
-    return "No text to show";
+    return "No card!";
   }
 
   /// Returns back text of the card
   /// based on selected card
   String getBackText() {
-    if (_index != null) {
+    if (_index != null && _cardsList.isNotEmpty) {
       return _cardsList[_index!][backIndex];
     }
-    return "No text to show";
+    return "No card!";
   }
 
   /// Returns index of database's cardsList
   /// based on selected card
   int? getCardIndex() {
-    if (_index != null) {
+    if (_index != null && _cardsList.isNotEmpty) {
       return _cardsList[_index!][cardIndex];
     }
     return null;
+  }
+
+  /// Skips/Prevents the card from selecting
+  void skipCard() {
+    if (_index != null) {
+      _cardsList.removeAt(_index!);
+      updateDistribution();
+    }
   }
 
   /// builds [_cardsList] for selected Deck,
@@ -309,6 +339,7 @@ class CardsList {
             database.cardsList[i][CardsDatabase.priorityIndex],
             i, // original index of the card
             0,
+            false
           ]);
         } else {
           // distribute probability value based on the
@@ -322,6 +353,7 @@ class CardsList {
             valueToDistribute,
             i, // original index of the card
             0,
+            false
           ]);
         }
         _debugPrint("Card: ${database.cardsList[i][CardsDatabase.frontIndex]}");
@@ -335,7 +367,7 @@ class CardsList {
         "Last distribution value (Sum): ${_cardsList.last[distributionValueIndex]}");
   }
 
-  /// cardsList[ [ frontText, backText, distributionValue, card's DB index, count], ...]
+  /// cardsList[ [ frontText, backText, distributionValue, card's DB index, count, skip], ...]
   List _cardsList = [];
   final _rng = Random();
 
