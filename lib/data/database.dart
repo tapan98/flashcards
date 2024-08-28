@@ -441,6 +441,7 @@ class CardsDatabase {
         [1, "x\u00B2"],
         [2, "Capitals of Indian States"],
       ];
+      updateDatabase();
     } else {
       loadData();
     }

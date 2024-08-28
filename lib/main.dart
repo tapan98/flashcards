@@ -12,21 +12,11 @@ void main() async {
   await Hive.openBox(CardsDatabase.cardsDB);
   await Hive.openBox(CardsDatabase.decksDB);
 
-  runApp(const MainApp());
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final db = CardsDatabase();
-    return DynamicColorBuilder(
+  runApp(
+    DynamicColorBuilder(
         builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
       return MaterialApp(
-        home: FirstPage(
-          database: db,
-        ),
+        home: const MainApp(),
         theme: ThemeData(
           colorScheme: lightDynamic,
           useMaterial3: true,
@@ -36,6 +26,18 @@ class MainApp extends StatelessWidget {
           useMaterial3: true,
         ),
       );
-    });
+    }),
+  );
+}
+
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final db = CardsDatabase();
+    return FirstPage(
+      database: db,
+    );
   }
 }

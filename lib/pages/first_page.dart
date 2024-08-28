@@ -1,6 +1,7 @@
 import 'package:flash_your_memory/data/database.dart';
 import 'package:flash_your_memory/pages/cards_page.dart';
 import 'package:flash_your_memory/pages/decks_page.dart';
+import 'package:flash_your_memory/pages/editor_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,9 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
-  int _activePage = 0;
+  static const int _decksPage = 0;
+  static const int _cardsPage = 1;
+  int _activePage = _decksPage;
   final _decksScrollController = ScrollController();
   final _cardsScrollController = ScrollController();
   static const int _popupMenuImport = 0;
@@ -29,6 +32,30 @@ class _FirstPageState extends State<FirstPage> {
     _decksScrollController.dispose();
     _cardsScrollController.dispose();
     super.dispose();
+  }
+
+  FloatingActionButton? buildFloatingActionButton(BuildContext context) {
+    final theme = Theme.of(context);
+    if (_activePage == _cardsPage) {
+      return FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => CardEditorPage(
+                deckID: -1,
+                database: widget.database,
+                notifyParent: () => setState(() {}),
+              ),
+            ),
+          );
+        },
+        tooltip: "Add new card",
+        backgroundColor: theme.colorScheme.primary,
+        foregroundColor: theme.colorScheme.onPrimary,
+        child: const Icon(Icons.add),
+      );
+    }
+    return null;
   }
 
   @override
@@ -49,6 +76,7 @@ class _FirstPageState extends State<FirstPage> {
       _cardsScrollController
     ];
     return Scaffold(
+      floatingActionButton: buildFloatingActionButton(context),
       appBar: AppBar(
         actions: [
           PopupMenuButton<int>(

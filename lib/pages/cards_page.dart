@@ -62,9 +62,7 @@ class _CardsPageState extends State<CardsPage> {
   }
 
   /// Generates a FloatingActionButton
-  ///
-  /// It's a test button for the selected deck,
-  /// else it's a add new card button
+  /// to start a test for the selected deck
   FloatingActionButton? buildFloatingActionButton(ThemeData theme) {
     if (widget.deckID != null &&
         ((_cardsList?.length ?? widget.database.cardsList.length) != 0)) {
@@ -92,25 +90,7 @@ class _CardsPageState extends State<CardsPage> {
       );
     }
 
-    return FloatingActionButton(
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => CardEditorPage(
-              deckID: -1,
-              database: widget.database,
-              notifyParent: () => setState(() {
-                widget.notifyParent();
-              }),
-            ),
-          ),
-        );
-      },
-      tooltip: "Add new card",
-      backgroundColor: theme.colorScheme.primary,
-      foregroundColor: theme.colorScheme.onPrimary,
-      child: const Icon(Icons.add),
-    );
+    return null;
   }
 
   @override
