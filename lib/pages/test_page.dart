@@ -58,7 +58,7 @@ class _TestPageState extends State<TestPage> {
 
     int? currentIndex = _cardsList?.getCardIndex();
     if (currentIndex != null) {
-      debugPrint(// priority level of the current card
+      _debugPrint(// priority level of the current card
           "${_cardsList?.getFrontText()} priority: ${widget.database.cardsList[currentIndex][CardsDatabase.priorityIndex]}");
       if (_isFront) {
         // tap to reveal button
@@ -69,7 +69,7 @@ class _TestPageState extends State<TestPage> {
               children: [
                 FilledButton(
                   onPressed: () {
-                    debugPrint("build(): Tap to reveal button pressed");
+                    _debugPrint("build(): Tap to reveal button pressed");
                     if (_controllerFlipCard.state?.isFront ?? false) {
                       _controllerFlipCard.toggleCardWithoutAnimation();
                       setState(() {});
@@ -157,20 +157,20 @@ class _TestPageState extends State<TestPage> {
   void onAssessmentButtonPressed({required bool isCorrect, bool skip = false}) {
     if (_cardsList != null && _cardsList!.getCardIndex() != null) {
       if (isCorrect) {
-        debugPrint("✅ button pressed\nDecreasing priority...");
+        _debugPrint("✅ button pressed\nDecreasing priority...");
         if ((widget.database.decreasePriority(_cardsList!.getCardIndex()!)) ==
             DbReturnCode.noCard) {
-          debugPrint("No Card");
+          _debugPrint("No Card");
         }
         if (skip) {
-          debugPrint('Skipping card "${_cardsList!.getFrontText()}"');
+          _debugPrint('Skipping card "${_cardsList!.getFrontText()}"');
           _cardsList!.skipCard();
         }
       } else {
-        debugPrint("❌ button pressed\nIncreasing priority...");
+        _debugPrint("❌ button pressed\nIncreasing priority...");
         if ((widget.database.increasePriority(_cardsList!.getCardIndex()!)) ==
             DbReturnCode.noCard) {
-          debugPrint("No Card");
+          _debugPrint("No Card");
         }
       }
     }
@@ -212,7 +212,7 @@ class _TestPageState extends State<TestPage> {
   }
 
   /// for debugging purposes
-  void debugPrint(String msg) {
+  void _debugPrint(String msg) {
     if (kDebugMode) {
       print("[TestPage] $msg");
     }

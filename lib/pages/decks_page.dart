@@ -1,8 +1,8 @@
 import 'package:flash_your_memory/data/database.dart';
 import 'package:flash_your_memory/pages/cards_page.dart';
-import 'package:flash_your_memory/util/dialog_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../util/deck_page_utils.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class DecksPage extends StatefulWidget {
@@ -114,6 +114,7 @@ class _DecksPageState extends State<DecksPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
+    _debugPrint("build(): creating slivers list");
     List<Widget> slivers = <Widget>[
       SliverGrid(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
@@ -144,155 +145,5 @@ class _DecksPageState extends State<DecksPage> {
     if (kDebugMode) {
       print("[DecksPage] $msg");
     }
-  }
-}
-
-/// A dialog that asks for confirmation to delete the deck and its cards
-class RemoveDeckDialog extends StatelessWidget {
-  const RemoveDeckDialog(
-      {super.key,
-      required this.deckID,
-      required this.database,
-      required this.notifyParent});
-  final int deckID;
-  final CardsDatabase database;
-  final void Function() notifyParent;
-
-  @override
-  Widget build(BuildContext context) {
-    return SimpleDialog(
-      title: const Text("Delete deck and all of its cards?"),
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Cancel")),
-              FilledButton(
-                onPressed: () {
-                  database.deleteAllFromDeck(deckID);
-                  notifyParent();
-                  Navigator.pop(context);
-                },
-                child: const Text("Delete"),
-              ),
-            ],
-          ),
-        )
-      ],
-    );
-  }
-}
-
-/// A dialog that allows the user to edit deck's name
-class EditDeckDialog extends StatelessWidget {
-  const EditDeckDialog({
-    super.key,
-    required this.deckID,
-    required this.formKey,
-    required this.notifyParent,
-    required this.database,
-  });
-
-  final GlobalKey<FormState> formKey;
-  final void Function() notifyParent;
-  final int deckID;
-  final CardsDatabase database;
-
-  @override
-  Widget build(BuildContext context) {
-    return SimpleDialog(
-      title: const Text("Edit Deck"),
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Form(
-            key: formKey,
-            child: TextFormField(
-              autofocus: true,
-              initialValue: database.getDeckTitle(deckID),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return "Please enter Deck";
-                }
-                return null;
-              },
-              onSaved: (value) {
-                if (value != null) {
-                  database.modifyDeck(deckID, value);
-                  notifyParent();
-                }
-              },
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              DialogButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                text: "Cancel",
-              ),
-              DialogButton(
-                onPressed: () {
-                  if (formKey.currentState!.validate()) {
-                    formKey.currentState!.save();
-                    Navigator.pop(context);
-                  }
-                },
-                text: "Save",
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-/// Deck card
-class DecoratedDeck extends StatelessWidget {
-  const DecoratedDeck({
-    super.key,
-    required this.text,
-    required this.onPressed,
-  });
-
-  final String text;
-  final Function() onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: theme.colorScheme.secondaryContainer,
-          foregroundColor: theme.colorScheme.onSecondaryContainer,
-          elevation: 5,
-          // alignment: Alignment.center,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-        ),
-        child: Text(
-          text,
-          style: const TextStyle(fontSize: 25),
-        ),
-      ),
-    );
   }
 }

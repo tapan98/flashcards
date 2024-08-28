@@ -23,9 +23,6 @@ enum DbReturnCode {
 }
 
 class CardsDatabase {
-  /// example data to be put in the List
-  static const bool _preCreateData = true;
-
   // Card's List indexes
   static const int _defaultCardLevel = 5;
   static const int frontIndex = 0;
@@ -283,179 +280,175 @@ class CardsDatabase {
 
   /// creates/loads data
   void initData() {
-    if (_cards.get(_cardsListName) == null ||
-        _decks.get(_decksListName) == null) {
-      if (kDebugMode) {
-        print("[Database/createInitData()] Creating init data");
-      }
-
-      if (_preCreateData) {
-        cardsList = [
-          [
-            "Scaffold class",
-            "Implements the basic Material Design visual layout structure",
-            _defaultCardLevel,
-            0,
-          ],
-          [
-            "11\u00B2",
-            "121",
-            _defaultCardLevel,
-            1,
-          ],
-          [
-            "12\u00B2",
-            "144",
-            _defaultCardLevel,
-            1,
-          ],
-          [
-            "13\u00B2",
-            "169",
-            _defaultCardLevel,
-            1,
-          ],
-          [
-            "14\u00B2",
-            "196",
-            _defaultCardLevel,
-            1,
-          ],
-          [
-            "15\u00B2",
-            "225",
-            _defaultCardLevel,
-            1,
-          ],
-          [
-            "16\u00B2",
-            "256",
-            _defaultCardLevel,
-            1,
-          ],
-          [
-            "17\u00B2",
-            "289",
-            _defaultCardLevel,
-            1,
-          ],
-          [
-            "18\u00B2",
-            "324",
-            _defaultCardLevel,
-            1,
-          ],
-          [
-            "19\u00B2",
-            "361",
-            _defaultCardLevel,
-            1,
-          ],
-          [
-            "20\u00B2",
-            "400",
-            _defaultCardLevel,
-            1,
-          ],
-          [
-            "Andhra Pradesh",
-            "Amaravati",
-            _defaultCardLevel,
-            2,
-          ],
-          [
-            "Jharkhand",
-            "Ranchi",
-            _defaultCardLevel,
-            2,
-          ],
-          [
-            "Kerala",
-            "Thiruvananthapuram",
-            _defaultCardLevel,
-            2,
-          ],
-          [
-            "Madhya Pradesh",
-            "Bhopal",
-            _defaultCardLevel,
-            2,
-          ],
-          [
-            "Mizoram",
-            "Aizawl",
-            _defaultCardLevel,
-            2,
-          ],
-          [
-            "Tripura",
-            "Agartala",
-            _defaultCardLevel,
-            2,
-          ],
-          [
-            "Arunachal Pradesh",
-            "Itanagar",
-            _defaultCardLevel,
-            2,
-          ],
-          [
-            "Assam",
-            "Dispur",
-            _defaultCardLevel,
-            2,
-          ],
-          [
-            "Bihar",
-            "Patna",
-            _defaultCardLevel,
-            2,
-          ],
-          [
-            "Haryana",
-            "Chandigarh",
-            _defaultCardLevel,
-            2,
-          ],
-          [
-            "Maharashtra",
-            "Mumbai",
-            _defaultCardLevel,
-            2,
-          ],
-          [
-            "Meghalaya",
-            "Shillong",
-            _defaultCardLevel,
-            2,
-          ],
-          [
-            "Rajasthan",
-            "Jaipur",
-            _defaultCardLevel,
-            2,
-          ],
-          [
-            "Tamil Nadu",
-            "Chennai",
-            _defaultCardLevel,
-            2,
-          ],
-        ];
-        decksList = [
-          [0, "Flutter"],
-          [1, "x\u00B2"],
-          [2, "Capitals of Indian States"],
-        ];
-      }
+    if (_cards.get(_cardsListName) == null &&
+        _decks.get(_decksListName) == null &&
+        kDebugMode) {
+      print("[Database/createInitData()] Creating init data");
+      cardsList = [
+        [
+          "Scaffold class",
+          "Implements the basic Material Design visual layout structure",
+          _defaultCardLevel,
+          0,
+        ],
+        [
+          "11\u00B2",
+          "121",
+          _defaultCardLevel,
+          1,
+        ],
+        [
+          "12\u00B2",
+          "144",
+          _defaultCardLevel,
+          1,
+        ],
+        [
+          "13\u00B2",
+          "169",
+          _defaultCardLevel,
+          1,
+        ],
+        [
+          "14\u00B2",
+          "196",
+          _defaultCardLevel,
+          1,
+        ],
+        [
+          "15\u00B2",
+          "225",
+          _defaultCardLevel,
+          1,
+        ],
+        [
+          "16\u00B2",
+          "256",
+          _defaultCardLevel,
+          1,
+        ],
+        [
+          "17\u00B2",
+          "289",
+          _defaultCardLevel,
+          1,
+        ],
+        [
+          "18\u00B2",
+          "324",
+          _defaultCardLevel,
+          1,
+        ],
+        [
+          "19\u00B2",
+          "361",
+          _defaultCardLevel,
+          1,
+        ],
+        [
+          "20\u00B2",
+          "400",
+          _defaultCardLevel,
+          1,
+        ],
+        [
+          "Andhra Pradesh",
+          "Amaravati",
+          _defaultCardLevel,
+          2,
+        ],
+        [
+          "Jharkhand",
+          "Ranchi",
+          _defaultCardLevel,
+          2,
+        ],
+        [
+          "Kerala",
+          "Thiruvananthapuram",
+          _defaultCardLevel,
+          2,
+        ],
+        [
+          "Madhya Pradesh",
+          "Bhopal",
+          _defaultCardLevel,
+          2,
+        ],
+        [
+          "Mizoram",
+          "Aizawl",
+          _defaultCardLevel,
+          2,
+        ],
+        [
+          "Tripura",
+          "Agartala",
+          _defaultCardLevel,
+          2,
+        ],
+        [
+          "Arunachal Pradesh",
+          "Itanagar",
+          _defaultCardLevel,
+          2,
+        ],
+        [
+          "Assam",
+          "Dispur",
+          _defaultCardLevel,
+          2,
+        ],
+        [
+          "Bihar",
+          "Patna",
+          _defaultCardLevel,
+          2,
+        ],
+        [
+          "Haryana",
+          "Chandigarh",
+          _defaultCardLevel,
+          2,
+        ],
+        [
+          "Maharashtra",
+          "Mumbai",
+          _defaultCardLevel,
+          2,
+        ],
+        [
+          "Meghalaya",
+          "Shillong",
+          _defaultCardLevel,
+          2,
+        ],
+        [
+          "Rajasthan",
+          "Jaipur",
+          _defaultCardLevel,
+          2,
+        ],
+        [
+          "Tamil Nadu",
+          "Chennai",
+          _defaultCardLevel,
+          2,
+        ],
+      ];
+      decksList = [
+        [0, "Flutter"],
+        [1, "x\u00B2"],
+        [2, "Capitals of Indian States"],
+      ];
     } else {
       loadData();
     }
   }
 
   void loadData() {
-    cardsList = _cards.get(_cardsListName);
-    decksList = _decks.get(_decksListName);
+    cardsList = _cards.get(_cardsListName, defaultValue: []);
+    decksList = _decks.get(_decksListName, defaultValue: []);
   }
 
   void updateDatabase() {

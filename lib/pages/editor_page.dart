@@ -82,7 +82,7 @@ class _CardEditorPageState extends State<CardEditorPage> {
     // Set up for edit mode
     if (widget.cardIndex != null &&
         widget.cardIndex! < widget.database.cardsList.length) {
-      debugPrint("initState(): --- Card Edit mode ---");
+      _debugPrint("initState(): --- Card Edit mode ---");
 
       _frontText = widget.database.cardsList[widget.cardIndex!]
           [CardsDatabase.frontIndex];
@@ -96,7 +96,7 @@ class _CardEditorPageState extends State<CardEditorPage> {
       _dropDownValue ??=
           widget.database.decksList[deckID][CardsDatabase.deckNameIndex];
 
-      debugPrint("initState(): _dropDownValue: $_dropDownValue");
+      _debugPrint("initState(): _dropDownValue: $_dropDownValue");
     }
   }
 
@@ -115,12 +115,12 @@ class _CardEditorPageState extends State<CardEditorPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          debugPrint("Save button _dropDownValue: $_dropDownValue");
+          _debugPrint("Save button _dropDownValue: $_dropDownValue");
           if (_formKey.currentState!.validate() && _dropDownValue != null) {
             _formKey.currentState!.save();
             int deckID = widget.database.deckWhere(_dropDownValue!);
             if (deckID == -1) {
-              debugPrint(
+              _debugPrint(
                   "FloatingActionButton(): Deck $_dropDownValue doesn't exist");
             } else {
               saveCard(
@@ -185,7 +185,7 @@ class _CardEditorPageState extends State<CardEditorPage> {
                     onChanged: (String? value) {
                       _dropDownValue = value;
                       setState(() {});
-                      debugPrint(
+                      _debugPrint(
                           "DropdownButtonFormField selected _dropDownValue: $_dropDownValue");
                     },
                     validator: (String? value) {
@@ -244,7 +244,7 @@ class _CardEditorPageState extends State<CardEditorPage> {
   }
 
   /// Prints debug message
-  void debugPrint(String msg) {
+  void _debugPrint(String msg) {
     if (kDebugMode) print("[CardEditor] $msg");
   }
 }

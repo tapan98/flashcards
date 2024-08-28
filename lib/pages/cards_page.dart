@@ -136,10 +136,10 @@ class _CardsPageState extends State<CardsPage> {
     );
   }
 
-  /// if [_cardsList] is not null,
-  /// then it attemps to delete card by accessing
-  /// actual database's card index stored at [_cardsList],
-  /// else deletes card from [widget.database.cardsList] at [index]
+  /// deletes a card from the list at [index].
+  ///
+  /// [index] is referred to either [_cardsList] (if not null)
+  /// or [widget.database.deleteCard] method
   void deleteCard(int index, BuildContext context) {
     if (_cardsList != null) {
       // delete from modified cards list
